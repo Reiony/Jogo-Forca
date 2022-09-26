@@ -21,8 +21,6 @@ function App() {
     const novoArray = [];
     const [palavraSelecionada] = sortidas
     const [chute, setChute] = useState("")
-    /* const estadoJogo = { erros: `${erros}`, palavra: palavraSelecionada } */
-/*     console.log(estadoJogo) */
     const estadoForca = { imagem: nivelForca[erros] }
     const palavraNormal = palavraSelecionada.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
     function Jogo(atributo) {
