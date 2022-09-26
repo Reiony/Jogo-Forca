@@ -69,7 +69,7 @@ function App() {
         }
 
         function verificaWinLose(arrayModificado, palavraInput) {
-            if (!arrayModificado.includes(" _ ")) {    //ou palavra digitada no input for igual a palavraSelecionada
+            if (!arrayModificado.includes(" _ ")) {
                 setWinLose("tracejado verdinho")
                 setIniciado(false)
                 setBotao("")
@@ -86,7 +86,7 @@ function App() {
                 <ul>
                     {alfabeto.map((letra, key) => (
                         <li key={key}>
-                            <button disabled={clicaletra.includes(letra)} className={botao} onClick={() => verificaLetra(letra)}>
+                            <button disabled={clicaletra.includes(letra)} className={botao} onClick={() => verificaLetra(letra)} data-identifier="letter">
                                 <h3>{letra.toUpperCase()}</h3>
                             </button>
                         </li>
@@ -101,13 +101,13 @@ function App() {
             <>
                 <div className="Topo">
                     <div className="caixa-esquerda">
-                        <img src={estadoForca.imagem} alt="forca inicial" />
+                        <img src={estadoForca.imagem} alt="forca inicial" data-identifier="game-image"/>
                     </div>
                     <div className="caixa-direita">
-                        <button onClick={() => IniciarJogo(atributo)}>
+                        <button onClick={() => IniciarJogo(atributo)} data-identifier="choose-word">
                             <span>Iniciar Jogo</span>
                         </button>
-                        <div className={winlose}>{array}</div>
+                        <div className={winlose} data-identifier="word">{array}</div>
                     </div>
                 </div>
                 <Alfabeto />
@@ -137,8 +137,8 @@ function App() {
                 <Jogo />
                 <div className="digitinha">
                     <h4>Ja sei a palavra!</h4>
-                    <input disabled={!iniciado} type="text" placeholder="Digita aí" value={chute} onChange={e => setChute(e.target.value)} />
-                    <button disabled={!iniciado} onClick={() => verificaWinLoseChute(chute)}>Chutar!</button>
+                    <input disabled={!iniciado} type="text" placeholder="Digita aí" value={chute} onChange={e => setChute(e.target.value)} data-identifier="type-guess"/>
+                    <button disabled={!iniciado} onClick={() => verificaWinLoseChute(chute)} data-identifier="guess-button">Chutar!</button>
                 </div>
             </div>
         </>
