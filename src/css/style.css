@@ -79,7 +79,9 @@ ul li button h3 {
     justify-content: center;
     gap: 15px;
 }
-
+.digitinha>h4{
+    font-family: 'Roboto', sans-serif;
+}
 .habilitado{
     /* color: lightseagreen; */
     background-color: lightblue;
