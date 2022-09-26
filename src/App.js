@@ -119,8 +119,8 @@ function App() {
     }
 
     function verificaWinLoseChute() {
-        if(chute === palavraSelecionada){
-            setArray(chute)
+        if(chute === palavraSelecionada| chute===palavraNormal){
+            setArray(palavraSelecionada)
             setWinLose("tracejado verdinho")
             setIniciado(false)
             setBotao("")
