@@ -9,44 +9,104 @@ import sortidas from "./palavras";
 import { useState } from "react";
 
 const alfabeto = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+const nivelForca = [forca0, forca1, forca2, forca3, forca4, forca5, forca6]
+let erros = 0;
 
-function Alfabeto() {
-    /* const [] */
+function Jogo(atributo) {
+    const [iniciado, setIniciado] = useState(false)
+    const [botao, setBotao] = useState("")
+    const [clicaletra, setLetra] = useState(false)
+    /* const [forca,setForca]=useState(nivelForca[0]) */
+    const [array, setArray] = useState([])
+    const novoArray = [];
+    const [palavraSelecionada] = sortidas
+    const estadoJogo = { erros: `${erros}`, palavra: palavraSelecionada }
+    console.log(estadoJogo)
+    const estadoForca = { imagem: nivelForca[erros] }
+    const palavraNormal = palavraSelecionada.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+    for (let i = 0; i < palavraNormal.length; i++) {
+        novoArray.push(palavraNormal[i]);
+    }
+
+    function IniciarJogo() {
+        let array = novoArray.map(() => ' _ ')
+        setArray(array)
+        if (!iniciado) {
+            setIniciado(true)
+            setBotao("habilitado")
+        }
+    }
+    function verificaLetra(letter) {
+        if (iniciado) {
+            const arrayModificado = [...array]
+            for (let i = 0; i < novoArray.length; i++) {
+                if (letter === novoArray[i]) {
+                    arrayModificado[i] = palavraSelecionada[i]
+                }
+            }
+            incrementaErro(arrayModificado,letter)
+            setArray(arrayModificado)
+            verificaWinLose(arrayModificado)
+        }
+    }
+    function incrementaErro(arrayModificado,letra) {
+        if (!novoArray.includes(letra)) {
+            erros++;
+            verificaWinLose(arrayModificado)
+        }
+    }
+
+    function verificaWinLose(arrayModificado){
+        if ((!arrayModificado.includes(" _ "))) {    //ou palavra digitada no input for igual a palavraSelecionada
+            alert("Você ganhou o jogo")
+        } else if (erros===6){
+            alert("Você perdeu :'(")
+        }
+    }
+    
+
+    function Alfabeto() {
+        return (
+            <ul>
+                {alfabeto.map((letra, key) => (
+                    <li key={key}>
+                        <button className={botao} onClick={() => verificaLetra(letra)}>
+                            <h3>{letra.toUpperCase()}</h3>
+                        </button>
+                    </li>
+                ))}
+            </ul>
+        )
+    }
+
     return (
-        <ul>
-            {alfabeto.map((letra, key) => (
-                <li key={key}>
-                    <button onClick={verificaCorreto()}>
-                        <h3>{letra.toUpperCase()}</h3>
+        <>
+            <div className="Topo">
+                <div className="caixa-esquerda">
+                    <img src={estadoForca.imagem} alt="forca inicial" />
+                </div>
+                <div className="caixa-direita">
+                    <button onClick={() => IniciarJogo(atributo)}>
+                        <span>Iniciar Jogo</span>
                     </button>
-                </li>
-            ))}
-        </ul>
+                    <div className="tracejado">{array}</div>
+                </div>
+            </div>
+            <Alfabeto />
+        </>
+
     )
 }
+
 export default function App() {
-    /* const [style, setStyle] = useState("") */
-    const estadosForca = [forca0, forca1, forca2, forca3, forca4, forca5, forca6]
-    const [palavraSelecionada] = sortidas
-    const novoArray = [];
-    for (let i = 0; i < palavraSelecionada.length; i++) {
-        novoArray.push(palavraSelecionada[i]);
-    }
-    console.log(novoArray)
-    console.log(palavraSelecionada)
-    console.log(palavraSelecionada.length)
     return (
         <>
             <div className="corpo">
-                <img src={forca0} alt="forca inicial" />
-                <button>
-                    <span>Escolher palavra</span>
-                </button>
-                <Alfabeto/>
+                <Jogo />
                 <div className="digitinha">
                     <h4>Ja sei a palavra!</h4>
                     <input type="text" placeholder="Digita então po" />
-                    <button>Chutar!</button>
+                    <button /* onClick={()=>verificaRespostaFinal()} */>Chutar!</button>
                 </div>
             </div>
         </>
